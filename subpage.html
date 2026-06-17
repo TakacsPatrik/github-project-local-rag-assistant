@@ -27,9 +27,6 @@
     .top{width:min(1100px,94vw);margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 0}
     .dot{width:10px;height:10px;border-radius:999px;background:var(--accent)}
     .title{font-weight:700;color:var(--text)}
-    .actions{margin-left:auto;display:flex;gap:10px}
-    .btn{border:1px solid rgba(148,163,184,.25);padding:8px 12px;border-radius:10px;background:var(--paper-light);color:var(--text);text-decoration:none;font-size:14px;}
-    .btn:hover{background:var(--paper-lighter)}
 
     .container{width:min(1100px,94vw);margin:24px auto}
     .notebook{display:grid;gap:18px}
@@ -59,10 +56,6 @@
     .content li{margin-bottom:8px;}
     .content code{font-family:var(--mono);background:var(--paper-light);border:1px solid rgba(148,163,184,.25);padding:.15rem .4rem;border-radius:6px;color:var(--accent);font-size:0.9em;}
 
-    /* Címkék (Tags) */
-    .tags-container {display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
-    .tech-tag {font-size:12px; font-weight:600; padding:4px 12px; border-radius:99px; background:var(--paper-lighter); border:1px solid rgba(148,163,184,.3); color:var(--text);}
-
     figure{margin:0}
     .imgwrap{display:block;overflow:hidden;border-radius:8px;border:1px solid rgba(148,163,184,.25)}
     .imgwrap img, .imgwrap video{display:block;width:100%;height:auto}
@@ -76,15 +69,11 @@
     <div class="top">
       <span class="dot" aria-hidden="true"></span>
       <div class="title">Local RAG Assistant for Enterprise Documents</div>
-      <div class="actions">
-        <a class="btn" href="#top">Back to top</a>
-      </div>
     </div>
   </header>
 
   <main class="container">
     <div class="notebook">
-      <a id="top"></a>
 
       <section class="cell">
         <div class="gutter">
@@ -92,15 +81,6 @@
           <div class="label">Text</div>
         </div>
         <div class="content">
-          <div class="tags-container">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">Ollama (Llama 3.1)</span>
-            <span class="tech-tag">ChromaDB</span>
-            <span class="tech-tag">LangChain</span>
-            <span class="tech-tag">Streamlit</span>
-            <span class="tech-tag">Marker</span>
-            <span class="tech-tag">SQL</span>
-          </div>
           <h1>Problem Statement & Vision</h1>
           
           <h2>The Challenge: An Information Labyrinth in Corporate Folders</h2>
