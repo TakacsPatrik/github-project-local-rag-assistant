@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="hu">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lokális RAG Asszisztens Vállalati Dokumentumokhoz</title>
-  <meta name="description" content="End-to-End LLM Pipeline bemutató oldal" />
+  <title>Local RAG Assistant for Enterprise Documents</title>
+  <meta name="description" content="End-to-End LLM Pipeline project page" />
   <style>
     :root{
       --bg: #0b0f17;
@@ -75,9 +75,9 @@
   <header>
     <div class="top">
       <span class="dot" aria-hidden="true"></span>
-      <div class="title">Lokális RAG Asszisztens Vállalati Dokumentumokhoz</div>
+      <div class="title">Local RAG Assistant for Enterprise Documents</div>
       <div class="actions">
-        <a class="btn" href="#top">Ugrás a tetejére</a>
+        <a class="btn" href="#top">Back to top</a>
       </div>
     </div>
   </header>
@@ -101,16 +101,16 @@
             <span class="tech-tag">Marker</span>
             <span class="tech-tag">SQL</span>
           </div>
-          <h1>A Probléma és Vízió</h1>
+          <h1>Problem Statement & Vision</h1>
           
-          <h2>A kihívás: Információs labirintus a vállalati mappákban</h2>
-          <p>Egy nagyobb vállalatnál (jelen esetben a Szegedi Vízműnél) az új vagy kevésbé tapasztalt kollégák számára a belső szabályzatok, integrált irányítási kézikönyvek és dokumentumok megtalálása gyakran egy labirintusban való bolyongással ér fel. A megfelelő információ felkutatása rengeteg értékes munkaidőt emésztett fel.</p>
+          <h2>The Challenge: An Information Labyrinth in Corporate Folders</h2>
+          <p>At a larger enterprise (in this case, Szeged Waterworks), finding internal policies, integrated management manuals, and documents often feels like wandering through a maze for new or less experienced colleagues. Searching for the right information consumed a significant amount of valuable working time.</p>
           
-          <h2>Az elsődleges cél és a lokális futtatás kényszere</h2>
-          <p>Az eredeti ötletem egy olyan intelligens keresőrendszer (RAG - Retrieval-Augmented Generation) létrehozása volt, amely megmondja, hogy egy adott témában melyik dokumentumban érdemes keresgélni. Mivel szigorúan bizalmas, belső céges adatokról van szó, a felhőalapú megoldások (pl. OpenAI API) szóba sem jöhettek. Ezért a projektet az alapoktól kezdve úgy terveztem meg, hogy 100%-ban lokálisan fusson, nyílt forráskódú modellek (Ollama) használatával, garantálva a maximális adatbiztonságot.</p>
+          <h2>The Primary Goal and the Necessity of Local Execution</h2>
+          <p>My original idea was to create an intelligent search system (RAG - Retrieval-Augmented Generation) that tells you which document to look for regarding a specific topic. Since we are dealing with strictly confidential, internal corporate data, cloud-based solutions (e.g., OpenAI API) were completely out of the question. Therefore, I designed the project from the ground up to run 100% locally, using open-source models (Ollama), guaranteeing maximum data privacy and security.</p>
 
-          <h2>Az MVP-től a valódi Asszisztensig</h2>
-          <p>Amikor elkészült a kezdeti MVP (Minimum Viable Product), egyértelművé vált a következő lépcsőfok: miért elégednénk meg azzal, hogy a modell csak megmutatja a dokumentum helyét? Fejlesszük tovább úgy, hogy közvetlenül meg is válaszolja a feltett kérdést a forrásanyagok alapján! Ehhez viszont egy robusztus adatfeldolgozó (Data Ingestion) csővezetékre volt szükség, amely képes megbirkózni a legkülönfélébb formátumokkal: szkennelt PDF-ekkel, Word dokumentumokkal és Excel táblázatokkal is.</p>
+          <h2>From MVP to a Real Assistant</h2>
+          <p>Once the initial MVP (Minimum Viable Product) was ready, the next step became obvious: why settle for the model merely pointing out the document's location? Let's develop it further so it directly answers the user's question based on the source materials! This, however, required a robust Data Ingestion pipeline capable of handling a wide variety of formats: scanned PDFs, Word documents, and Excel spreadsheets.</p>
         </div>
       </section>
 
@@ -122,9 +122,9 @@
         <div class="content">
           <figure>
             <div class="imgwrap">
-              <img src="helyorzo_mvp.png" alt="A kezdeti MVP verzió felülete" />
+              <img src="placeholder_mvp.png" alt="The initial MVP interface" />
             </div>
-            <figcaption>1. ábra: A projekt kezdeti MVP (Minimum Viable Product) fázisa.</figcaption>
+            <figcaption>Figure 1: The initial MVP (Minimum Viable Product) phase of the project.</figcaption>
           </figure>
         </div>
       </section>
@@ -135,124 +135,13 @@
           <div class="label">Text</div>
         </div>
         <div class="content">
-          <h1>Adatfeldolgozás</h1>
+          <h1>Data Ingestion</h1>
           
-          <h2>A minőségi adat fontossága</h2>
-          <p>Egy RAG (Retrieval-Augmented Generation) rendszer pontosan annyira jó, amennyire a betáplált adatok minősége engedi. A "Garbage in, garbage out" elv itt hatványozottan érvényesül: ha a modell rosszul strukturált, zajos szöveget kap, a válaszok is pontatlanok vagy használhatatlanok lesznek. A legnagyobb kihívást a céges környezetben a szkennelt PDF-ek, valamint a vegyes formátumú (Word, Excel) dokumentumok jelentették.</p>
+          <h2>The Importance of Quality Data</h2>
+          <p>A RAG (Retrieval-Augmented Generation) system is only as good as the quality of the data fed into it. The "Garbage in, garbage out" principle heavily applies here: if the model receives poorly structured, noisy text, the answers will be inaccurate or useless. The biggest challenge in the corporate environment was dealing with scanned PDFs and mixed-format (Word, Excel) documents.</p>
 
-          <h2>Strukturált kinyerés a Marker segítségével</h2>
-          <p>A nyers szöveg kinyerésére egy igazi "nagyágyút", a nyílt forráskódú <code>Marker</code> könyvtárat vetettem be. A hagyományos OCR megoldásokkal ellentétben a Marker nem csupán a karaktereket ismeri fel a szkennelt PDF-ekből, hanem strukturált Markdown formátumot állít elő. Képes megőrizni a fejléceket, bekezdéseket és listákat, ami a későbbi darabolási (chunking) fázisban elengedhetetlen a kontextus megőrzéséhez. Emellett a rendszert felkészítettem a <code>.docx</code> és <code>.xlsx</code> fájlok fogadására is, amelyeket a háttérben automatikusan PDF-fé konvertál, mielőtt a Marker feldolgozná őket.</p>
+          <h2>Structured Extraction using Marker</h2>
+          <p>To extract raw text, I deployed a real "heavyweight," the open-source <code>Marker</code> library. Unlike traditional OCR solutions, Marker doesn't just recognize characters from scanned PDFs; it generates a structured Markdown format. It can preserve headers, paragraphs, and lists, which is essential for maintaining context during the subsequent chunking phase. Additionally, I prepared the system to handle <code>.docx</code> and <code>.xlsx</code> files, automatically converting them to PDF in the background before Marker processes them.</p>
 
-          <h2>Az "Extra Mile": LLM-alapú hibajavítás (Proofreading)</h2>
-          <p>A szkennelt dokumentumoknál (OCR) gyakran előfordulnak félreolvasások és karakterhibák. Ennek kiküszöbölésére beépítettem egy opcionális lépést a csővezetékbe: egy dedikált Ollama modellt (Llama 3.1) használtam "korrektorként". Egy szigorúan megírt rendszer-prompt (System Prompt) segítségével az LLM kijavítja a nyelvtani és helyesírási hibákat a kinyert Markdown szövegben, miközben szigorúan tilos megváltoztatnia a mondatszerkezetet, a formázást vagy a tényleges adatokat. Így a vektoradatbázisba már egy teljesen megtisztított, kiváló minőségű szöveg kerül.</p>
-        </div>
-      </section>
-
-      <section class="cell">
-        <div class="gutter">
-          <div class="prompt">In [3]:</div>
-          <div class="label">Text</div>
-        </div>
-        <div class="content">
-          <h1>Chunking és ChromaDB</h1>
-          
-          <h2>Markdown-alapú strukturálás és kísérletezés</h2>
-          <p>A minőségi adatok kinyerése után a következő kritikus lépés a szöveg megfelelő darabolása (chunking) volt. Mivel a Marker már strukturált Markdown formátumot adott, adta magát a megoldás: a dokumentumokat a Markdown fejlécek (H1, H2, H3) alapján logikai egységekre bontottam. Rengeteg kísérletezés és iparági RAG best-practice (legjobb gyakorlat) tanulmányozása után állítottam be az optimális chunk méreteket és átfedéseket (overlap), hogy az LLM mindig a legrelevánsabb és legteljesebb kontextust kapja meg, anélkül, hogy elveszítené a fonalat.</p>
-
-          <h2>Verziókövetés és automatikus frissítés (Production-ready funkció)</h2>
-          <p>Egy nagyvállalatnál a szabályzatok folyamatosan frissülnek. Tudtam, hogy ha a rendszer élesbe megy, manuálisan lehetetlen lesz karbantartani az adatbázist. Ezért írtam egy egyedi, intelligens fájlnév-értelmező (parser) logikát a vektoradatbázishoz (<code>ChromaDB</code>). A rendszer futtatáskor felismeri a dokumentumok verzióját (dátumbélyegek alapján):</p>
-          <ul>
-            <li>Ha új verziót talál, <strong>automatikusan megkeresi és törli a régi dokumentumhoz tartozó elavult chunkokat</strong> az adatbázisból.</li>
-            <li>Csak ezután végzi el az új verzió darabolását, beágyazását (embedding - <code>bge-m3</code> modellel) és feltöltését. Ez biztosítja, hogy az asszisztens soha ne hallucináljon elavult információkat.</li>
-          </ul>
-
-          <h2>Gazdag metaadatok és a "Dependency Hell" leküzdése</h2>
-          <p>Ahhoz, hogy a rendszer visszakereshető legyen, a feltöltés során gazdag metaadatokat mentettem a chunkok mellé (pl. forrásfájl neve, elérési útvonal). Ennek technikai megvalósítása nem volt zökkenőmentes: a Marker, a LangChain, az Ollama és a különböző PDF-feldolgozó könyvtárak összehangolása hamar egy "dependency hell"-be (függőségi pokolba) torkollott. A konfliktusok elkerülése és a hordozhatóság érdekében a különböző adatfeldolgozó pipeline-okat dedikált, izolált Python virtuális környezetekbe (venv) szerveztem.</p>
-        </div>
-      </section>
-
-      <section class="cell">
-        <div class="gutter">
-          <div class="prompt">In [4]:</div>
-          <div class="label">Text</div>
-        </div>
-        <div class="content">
-          <h1>UI, Prompt és Metrikák</h1>
-          
-          <h2>Letisztult UI és átláthatóság (Streamlit)</h2>
-          <p>Egy prototípusnál a parancssoros (CLI) futtatás megteszi, de a végfelhasználók számára egy könnyen kezelhető, letisztult felületre volt szükség. A választásom a <code>Streamlit</code>-re esett, amivel gyorsan és hatékonyan tudtam egy professzionális webes felületet biztosítani az asszisztensnek. Annak érdekében, hogy a felhasználó megbízzon a rendszerben, az UI nemcsak a végső választ jeleníti meg, hanem "kinyitható" formában megmutatja a ChromaDB-ből visszakapott, a válasz alapjául szolgáló nyers chunkokat és azok metaadatait is.</p>
-        </div>
-      </section>
-
-      <section class="cell">
-        <div class="gutter">
-          <div class="prompt">Out [4]:</div>
-          <div class="label" style="color:var(--accent);">Image</div>
-        </div>
-        <div class="content">
-          <figure>
-            <div class="imgwrap">
-               <img src="helyorzo_ui.png" alt="Streamlit Felhasználói Felület" />
-            </div>
-            <figcaption>2. ábra: A Streamlit-ben elkészített interaktív RAG Asszisztens felülete.</figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <section class="cell">
-        <div class="gutter">
-          <div class="prompt">In [5]:</div>
-          <div class="label">Text</div>
-        </div>
-        <div class="content">
-          <h2>Szigorú Prompt Engineering (A hallucináció kizárása)</h2>
-          <p>A RAG rendszerek legnagyobb veszélye, hogy a modell olyan információt is "kitalál" (hallucinál), ami nincs benne a forrásban. Ennek elkerülésére egy rendkívül szigorú szabályrendszert (Prompt) fektettem le. Az LLM megkapja a feltett kérdést és a kikerestett chunkokat, a prompt pedig kényszeríti: <strong>kizárólag a kapott információkból dolgozhat</strong>. Ha a kontextus nem tartalmazza a választ, a modellnek kötelessége ezt jelezni, ahelyett, hogy megpróbálná kitalálni azt.</p>
-
-          <h2>Visszajelzési hurok (Feedback Loop) és SQL Telemetria</h2>
-          <p>A rendszer folyamatos fejlesztése és kiértékelése (evaluation) érdekében egy beépített mérési rendszert is implementáltam:</p>
-          <ul>
-            <li><strong>Futásidő monitorozás:</strong> A felület külön méri és kiírja, hogy mennyi ideig tartott az adatbázisbeli keresés (Retrieval time), és mennyi időt vett igénybe a modell válaszgenerálása (Generation time).</li>
-            <li><strong>Felhasználói értékelés:</strong> Minden válasz alatt található egy Like/Dislike gomb.</li>
-            <li><strong>Adatbázis logolás:</strong> A rendszer ezeket a metrikákat (a feltett kérdést, a generált választ, a felhasznált chunkok számát, a futásidőket és a felhasználói értékelést) strukturáltan elmenti egy SQL adatbázisba. Ez az adatbázis elengedhetetlen a rendszer jövőbeli finomhangolásához és az esetleges keresési anomáliák kiszűréséhez.</li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="cell">
-        <div class="gutter">
-          <div class="prompt">Out [5]:</div>
-          <div class="label" style="color:var(--accent);">Video</div>
-        </div>
-        <div class="content">
-          <figure>
-            <div class="imgwrap">
-              <video src="helyorzo_video.mp4" autoplay loop muted playsinline></video>
-              </div>
-            <figcaption>3. ábra: Demonstráció a rendszer futásáról és a visszajelzési modul működéséről.</figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <section class="cell">
-        <div class="gutter">
-          <div class="prompt">In [6]:</div>
-          <div class="label">Text</div>
-        </div>
-        <div class="content">
-          <h1>Összegzés és Skálázhatóság (MVP Státusz)</h1>
-          
-          <h2>A jelenlegi fázis: Egy stabil alapokon nyugvó MVP</h2>
-          <p>Fontos hangsúlyozni, hogy a bemutatott projekt jelenlegi formájában egy MVP (Minimum Viable Product). Bár az architektúra és a teljes end-to-end folyamat (az adatok beolvasásától a vektorizáláson át a generálásig) hibátlanul működik, a csatolt képeken és a metrikákban látható hosszabb modell-futási és válaszadási idők a jelenlegi környezetből fakadnak.</p>
-
-          <h2>A lokális futtatás hardveres ára</h2>
-          <p>Mivel a rendszer tervezésekor az adatvédelem (privacy) volt a legfőbb szempont, a teljes folyamat – beleértve a Llama 3.1 modell futtatását az Ollama keretrendszerrel – lokálisan, a saját fejlesztői gépemen történt. Egy ilyen komplex, 8 milliárd paraméteres nagy nyelvi modell (LLM) és a beágyazó (embedding) modell egyidejű, személyi számítógépen történő futtatása természetes módon nagyobb számítási kapacitást és időt igényel.</p>
-
-          <h2>A jövőbeli fejlesztés és az élesítés útja</h2>
-          <p>Ez a jelenlegi "szűk keresztmetszet" egy vállalati bevezetés (production deployment) során könnyedén feloldható. A kód és a RAG csővezeték már skálázásra kész: a rendszert dedikált, megfelelő GPU-val ellátott on-premise AI szerverekre (vagy privát felhőbe) költöztetve az inferencia (válaszgenerálás) ideje a töredékére csökkenne. A projekt fő célja a "Proof of Concept" (koncepció bizonyítása) és a biztonságos, belső adatkezelési logika megalkotása volt – amit a rendszer maradéktalanul teljesít.</p>
-        </div>
-      </section>
-
-    </div>
-  </main>
-</body>
-</html>
+          <h2>The "Extra Mile": LLM-based Proofreading</h2>
+          <p>Scanned documents (OCR) often contain misreads and character errors
