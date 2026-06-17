@@ -161,30 +161,7 @@
           
           <h2>Clean UI and Transparency (Streamlit)</h2>
           <p>For a prototype, command-line (CLI) execution is sufficient, but end-users needed an easy-to-use, clean interface. My choice was <code>Streamlit</code>, which allowed me to quickly and effectively provide a professional web interface for the assistant. To build user trust in the system, the UI not only displays the final answer but also shows the raw chunks retrieved from ChromaDB (which serve as the basis for the answer) and their metadata in an expandable format.</p>
-        </div>
-      </section>
-
-      <section class="cell">
-        <div class="gutter">
-          <div class="prompt">Out [4]:</div>
-          <div class="label" style="color:var(--accent);">Image</div>
-        </div>
-        <div class="content">
-          <figure>
-            <div class="imgwrap">
-               <img src="placeholder_ui.png" alt="Streamlit User Interface" />
-            </div>
-            <figcaption>Figure 2: The interface of the interactive RAG Assistant built in Streamlit.</figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <section class="cell">
-        <div class="gutter">
-          <div class="prompt">In [5]:</div>
-          <div class="label">Text</div>
-        </div>
-        <div class="content">
+          
           <h2>Strict Prompt Engineering (Eliminating Hallucinations)</h2>
           <p>The biggest danger of RAG systems is that the model "invents" (hallucinates) information not present in the source. To prevent this, I established an extremely strict set of rules (Prompt). The LLM receives the asked question and the retrieved chunks, and the prompt forces it: <strong>it must work exclusively from the provided information</strong>. If the context does not contain the answer, the model is obligated to state this plainly, rather than attempting to guess.</p>
 
@@ -200,13 +177,43 @@
 
       <section class="cell">
         <div class="gutter">
-          <div class="prompt">Out [5]:</div>
+          <div class="prompt">Out [2]:</div>
           <div class="label" style="color:var(--accent);">Video</div>
         </div>
         <div class="content">
           <figure>
             <div class="imgwrap">
               <video src="placeholder_video.mp4" controls autoplay loop muted playsinline></video>
+              </div>
+            <figcaption>Figure 2: Demonstration of the system running and the feedback module in action.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+            <section class="cell">
+        <div class="gutter">
+          <div class="prompt">Out [3]:</div>
+          <div class="label" style="color:var(--accent);">Video</div>
+        </div>
+        <div class="content">
+          <figure>
+            <div class="imgwrap">
+              <video src="placeholder_video_2.mp4" controls autoplay loop muted playsinline></video>
+              </div>
+            <figcaption>Figure 3: Demonstration of the system running and the feedback module in action.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+            <section class="cell">
+        <div class="gutter">
+          <div class="prompt">Out [4]:</div>
+          <div class="label" style="color:var(--accent);">Video</div>
+        </div>
+        <div class="content">
+          <figure>
+            <div class="imgwrap">
+              <video src="placeholder_video_3.mp4" controls autoplay loop muted playsinline></video>
               </div>
             <figcaption>Figure 3: Demonstration of the system running and the feedback module in action.</figcaption>
           </figure>
@@ -215,7 +222,7 @@
 
       <section class="cell">
         <div class="gutter">
-          <div class="prompt">In [6]:</div>
+          <div class="prompt">In [5]:</div>
           <div class="label">Text</div>
         </div>
         <div class="content">
