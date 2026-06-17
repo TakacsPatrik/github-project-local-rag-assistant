@@ -144,4 +144,115 @@
           <p>To extract raw text, I deployed a real "heavyweight," the open-source <code>Marker</code> library. Unlike traditional OCR solutions, Marker doesn't just recognize characters from scanned PDFs; it generates a structured Markdown format. It can preserve headers, paragraphs, and lists, which is essential for maintaining context during the subsequent chunking phase. Additionally, I prepared the system to handle <code>.docx</code> and <code>.xlsx</code> files, automatically converting them to PDF in the background before Marker processes them.</p>
 
           <h2>The "Extra Mile": LLM-based Proofreading</h2>
-          <p>Scanned documents (OCR) often contain misreads and character errors
+          <p>Scanned documents (OCR) often contain misreads and character errors. To eliminate these, I built an optional step into the pipeline: I used a dedicated Ollama model (Llama 3.1) as a "proofreader". Using a strictly written System Prompt, the LLM corrects grammatical and spelling errors in the extracted Markdown text, while being strictly forbidden from changing the sentence structure, formatting, or the actual data. Thus, only fully cleaned, high-quality text enters the vector database.</p>
+        </div>
+      </section>
+
+      <section class="cell">
+        <div class="gutter">
+          <div class="prompt">In [3]:</div>
+          <div class="label">Text</div>
+        </div>
+        <div class="content">
+          <h1>Chunking and ChromaDB</h1>
+          
+          <h2>Markdown-based Structuring and Experimentation</h2>
+          <p>After extracting quality data, the next critical step was the proper segmentation (chunking) of the text. Since Marker already provided structured Markdown, the solution was straightforward: I divided the documents into logical units based on Markdown headers (H1, H2, H3). After extensive experimentation and studying industry RAG best practices, I set the optimal chunk sizes and overlaps so that the LLM always receives the most relevant and complete context without losing the thread.</p>
+
+          <h2>Version Control and Automatic Updates (Production-ready feature)</h2>
+          <p>At a large company, policies are constantly updated. I knew that if the system went live, manually maintaining the database would be impossible. Therefore, I wrote a custom, intelligent filename parser logic for the vector database (<code>ChromaDB</code>). Upon execution, the system recognizes document versions (based on date stamps):</p>
+          <ul>
+            <li>If it finds a newer version, it <strong>automatically locates and deletes the outdated chunks belonging to the old document</strong> from the database.</li>
+            <li>Only then does it perform the chunking, embedding (using the <code>bge-m3</code> model), and uploading of the new version. This ensures the assistant never hallucinates outdated information.</li>
+          </ul>
+
+          <h2>Rich Metadata and Overcoming "Dependency Hell"</h2>
+          <p>To make the system searchable, I saved rich metadata alongside the chunks during the upload process (e.g., source file name, file path). The technical implementation of this wasn't smooth sailing: coordinating Marker, LangChain, Ollama, and various PDF processing libraries quickly turned into a "dependency hell". To avoid conflicts and ensure portability, I organized the different data processing pipelines into dedicated, isolated Python virtual environments (venv).</p>
+        </div>
+      </section>
+
+      <section class="cell">
+        <div class="gutter">
+          <div class="prompt">In [4]:</div>
+          <div class="label">Text</div>
+        </div>
+        <div class="content">
+          <h1>UI, Prompts, and Metrics</h1>
+          
+          <h2>Clean UI and Transparency (Streamlit)</h2>
+          <p>For a prototype, command-line (CLI) execution is sufficient, but end-users needed an easy-to-use, clean interface. My choice was <code>Streamlit</code>, which allowed me to quickly and effectively provide a professional web interface for the assistant. To build user trust in the system, the UI not only displays the final answer but also shows the raw chunks retrieved from ChromaDB (which serve as the basis for the answer) and their metadata in an expandable format.</p>
+        </div>
+      </section>
+
+      <section class="cell">
+        <div class="gutter">
+          <div class="prompt">Out [4]:</div>
+          <div class="label" style="color:var(--accent);">Image</div>
+        </div>
+        <div class="content">
+          <figure>
+            <div class="imgwrap">
+               <img src="placeholder_ui.png" alt="Streamlit User Interface" />
+            </div>
+            <figcaption>Figure 2: The interface of the interactive RAG Assistant built in Streamlit.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="cell">
+        <div class="gutter">
+          <div class="prompt">In [5]:</div>
+          <div class="label">Text</div>
+        </div>
+        <div class="content">
+          <h2>Strict Prompt Engineering (Eliminating Hallucinations)</h2>
+          <p>The biggest danger of RAG systems is that the model "invents" (hallucinates) information not present in the source. To prevent this, I established an extremely strict set of rules (Prompt). The LLM receives the asked question and the retrieved chunks, and the prompt forces it: <strong>it must work exclusively from the provided information</strong>. If the context does not contain the answer, the model is obligated to state this plainly, rather than attempting to guess.</p>
+
+          <h2>Feedback Loop and SQL Telemetry</h2>
+          <p>For continuous system improvement and evaluation, I also implemented a built-in measurement system:</p>
+          <ul>
+            <li><strong>Execution time monitoring:</strong> The interface separately measures and displays how long the database search took (Retrieval time) and how much time the model took to generate the answer (Generation time).</li>
+            <li><strong>User evaluation:</strong> A Like/Dislike button is located under every answer to gather feedback.</li>
+            <li><strong>Database logging:</strong> The system structurally saves these metrics (the asked question, the generated answer, the number of chunks used, execution times, and user evaluation) into an SQL database. This database is essential for future fine-tuning of the system and filtering out potential search anomalies.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="cell">
+        <div class="gutter">
+          <div class="prompt">Out [5]:</div>
+          <div class="label" style="color:var(--accent);">Video</div>
+        </div>
+        <div class="content">
+          <figure>
+            <div class="imgwrap">
+              <video src="placeholder_video.mp4" autoplay loop muted playsinline></video>
+              </div>
+            <figcaption>Figure 3: Demonstration of the system running and the feedback module in action.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="cell">
+        <div class="gutter">
+          <div class="prompt">In [6]:</div>
+          <div class="label">Text</div>
+        </div>
+        <div class="content">
+          <h1>Summary and Scalability (MVP Status)</h1>
+          
+          <h2>The Current Phase: A Solidly Built MVP</h2>
+          <p>It is important to emphasize that the presented project in its current form is an MVP (Minimum Viable Product). Although the architecture and the entire end-to-end process (from data ingestion through vectorization to generation) work flawlessly, the longer model execution and response times visible in the attached images and metrics stem from the current environment.</p>
+
+          <h2>The Hardware Cost of Local Execution</h2>
+          <p>Since data privacy was the top priority during the system's design, the entire process—including running the Llama 3.1 model with the Ollama framework—happened locally on my own development machine. Running such a complex, 8-billion parameter large language model (LLM) and the embedding model simultaneously on a personal computer naturally requires more computational capacity and time.</p>
+
+          <h2>Future Development and the Path to Production</h2>
+          <p>This current "bottleneck" can be easily resolved during a production deployment. The code and the RAG pipeline are already ready to scale: moving the system to dedicated on-premise AI servers (or a private cloud) equipped with appropriate GPUs would reduce the inference (answer generation) time to a fraction. The main goal of the project was the "Proof of Concept" and creating a secure, internal data management logic—which the system fully achieves.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</body>
+</html>
